@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EventMap xmlns="http://mate.asfusion.com"
+		  xmlns:mx="library://ns.adobe.com/flex/mx"
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:debug="com.asfusion.mate.utils.debug.*" 
+		  >
+	<fx:Script>
+		<![CDATA[
+			import com.ezplanner.calander.events.PlannerEvent;
+			import com.ezplanner.calander.ui.presenters.MasterPresentationModel;
+			import com.ezplanner.calander.ui.views.DatePlannerView;
+			import com.ezplanner.calander.ui.views.LoginView;
+			import com.ezplanner.calander.ui.views.MasterUI;
+			import com.ezplanner.calander.ui.views.StartCalendarView;
+			import com.ezplanner.calander.ui.views.WelcomeView;
+			import com.ezplanner.calander.utils.Constants;
+			
+			import mx.events.FlexEvent;
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<EventHandlers type="{FlexEvent.PREINITIALIZE}"><ObjectBuilder generator="{MasterPresentationModel}" constructorArguments="{scope.dispatcher}"/></EventHandlers>
+		<EventHandlers type="{PlannerEvent.EVENT_GO_WELCOME}"><MethodInvoker generator="{MasterPresentationModel}" method="navigatePages" arguments="{Constants.MODE_WELCOME}"/></EventHandlers>
+
+		<Injectors targets="{[MasterUI,LoginView,WelcomeView,StartCalendarView,DatePlannerView]}"><PropertyInjector targetKey="model" source="{MasterPresentationModel}" /></Injectors>
+		<Injectors target="{DatePlannerView}">
+			<PropertyInjector targetKey="taskList" source="{MasterPresentationModel}" sourceKey="taskList"/>
+		</Injectors>
+	</fx:Declarations>
+	
+</EventMap>

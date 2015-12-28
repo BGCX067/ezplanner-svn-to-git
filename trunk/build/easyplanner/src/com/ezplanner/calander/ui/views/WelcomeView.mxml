@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%" xmlns:controls="com.ezplanner.calander.ui.controls.*">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.ezplanner.calander.ui.presenters.MasterPresentationModel;
+			import com.ezplanner.calander.utils.Constants;
+			
+			public var model:MasterPresentationModel;
+			
+			[Bindable][Embed(source="assets/images/icon_16x16.png")]
+			private var saveBtn:Class;
+			
+		]]>
+	</fx:Script>
+	
+	<s:VGroup width="100%" height="100%" verticalAlign="middle" horizontalAlign="center" gap="0">
+		
+		<s:HGroup width="100%">
+				<s:BorderContainer width="50%" height="400" backgroundColor="#DDD9BE">
+					
+					<s:VGroup width="100%" verticalAlign="middle" horizontalAlign="center">
+						<s:Group height="50"/>
+						
+						<s:VGroup gap="10">
+							<s:Label text="Select our guest book to manage your gust list"/>
+						</s:VGroup>
+						<s:Group height="20"/>
+						<s:HGroup>
+							<s:Button label="Go" click="model.gotoPages(Constants.MODE_START_CALENDAR)"/>
+						</s:HGroup>
+					</s:VGroup>
+					
+					
+				</s:BorderContainer>
+			
+				<s:BorderContainer width="50%" height="400" backgroundColor="#DDD9BE">
+					
+					<s:VGroup width="100%" verticalAlign="middle" horizontalAlign="center">
+						<s:Group height="50"/>
+						
+						<s:VGroup gap="10">
+							<s:Label text="Select our Wedding planner to manage your day to day activities"/>
+						</s:VGroup>
+						<s:Group height="20"/>
+						<s:HGroup>
+							<s:Button label="Go" click="model.gotoPages(Constants.MODE_START_CALENDAR)"/>
+						</s:HGroup>
+					</s:VGroup>
+					
+				</s:BorderContainer>
+		</s:HGroup>
+	</s:VGroup>
+	
+</s:NavigatorContent>

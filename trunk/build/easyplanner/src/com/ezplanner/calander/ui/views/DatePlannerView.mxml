@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%" xmlns:controls="com.ezplanner.calander.ui.controls.*"
+					 contentCreationComplete="onCreationComplete()">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:VerticalLayout id="vlayout" gap="10"/>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.ezplanner.calander.model.vos.TaskVO;
+			import com.ezplanner.calander.ui.presenters.MasterPresentationModel;
+			import com.ezplanner.calander.utils.Constants;
+			import com.ezplanner.calander.utils.DateUtils;
+			import com.flexoop.utilities.dateutils.DateUtils;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.CalendarLayoutChangeEvent;
+			import mx.events.DateChooserEvent;
+			
+			import org.as3commons.lang.DateUtils;
+			
+			[Bindable]public var model:MasterPresentationModel;
+			[Bindable]public var taskList:ArrayCollection;
+			
+			
+			private function dateSelectHandler(event:CalendarLayoutChangeEvent):void{
+				model.currentDate = this.cdate.selectedDate;
+				setdayBtn.enabled = (model.currentDate != null ? true : false);
+				model.getTasksByDay(com.flexoop.utilities.dateutils.DateUtils.getMidDate(model.currentDate));
+			}
+			private function dateChangeHandler(event:MouseEvent):void{
+				model.currentDate = this.cdate.selectedDate;
+				setdayBtn.enabled = (model.currentDate != null ? true : false);
+			}
+			
+			private function onCreationComplete():void{
+				setdayBtn.enabled = true;
+				model.getTasksByDay(com.flexoop.utilities.dateutils.DateUtils.getMidDate(model.currentDate));
+			} 
+			
+			protected function enterDayDetailEventHandler(event:MouseEvent):void
+			{
+				/**
+				 * CLUDGE 
+				 * Would be better to add / updated only changed fields 
+				 * rather than adding and updating the entire 24 rows in db 
+				 * 
+				 * TODO
+				 * make better approch to add / update
+				 * 
+				 * **/
+				
+				var editedData:ArrayCollection =  new ArrayCollection();
+				var newEntryData:ArrayCollection = new ArrayCollection();
+				var data:ArrayCollection = hrEvent.dataProvider as ArrayCollection;
+				var datalen:int = data.length;
+				var taskVO:TaskVO;
+				for(var i:int = 0; i<datalen; i++)	{
+					taskVO = data[i] as TaskVO;
+					if(taskVO.isEdited)	{
+						// check whether the data is dbdata or a fresh one
+						taskVO.date = com.flexoop.utilities.dateutils.DateUtils.getMidDate(model.currentDate);
+						if(checkDbData(taskVO))	{
+							editedData.addItem(taskVO);
+						}
+						else	{
+							newEntryData.addItem(taskVO)
+						}
+					}
+				}
+				trace(":::::::::::"+model.dbData.length)
+				if(newEntryData.length > 0 && editedData.length > 0)	{
+					model.addDaysTask(newEntryData,editedData);
+				}
+				else if(newEntryData.length > 0)	{
+					model.addDaysTask(newEntryData,editedData);
+				}
+				else if(editedData.length > 0)	{
+					model.editDaysTask(editedData);
+				}
+				//model.addDaysTask(editedData);
+				//model.addDaysTask(editedData);
+			}
+			
+			private function checkDbData(tvo:TaskVO):Boolean	{
+				var column:Object;
+				var isUpdate:Boolean = false;
+				for(var i:Number = 0; i<model.dbData.length; i++)	{
+					column = model.dbData[i];
+					if(tvo.id == int(column.id) && tvo.time == column.time )	{
+						isUpdate = true;
+						break; 
+					}
+				}
+				return isUpdate;
+			}
+			
+			protected function navigateDays(event:MouseEvent):void
+			{
+				var changedDate:Date = new Date();
+				if(event.target == this.nextBtn)	{
+					changedDate = com.flexoop.utilities.dateutils.DateUtils.dateAdd('date',1,model.currentDate);
+				}
+				else	{
+					changedDate = com.flexoop.utilities.dateutils.DateUtils.dateAdd('date',-1,model.currentDate);
+				}
+				model.currentDate = changedDate;
+				setdayBtn.enabled = (model.currentDate != null ? true : false);
+				model.getTasksByDay(com.flexoop.utilities.dateutils.DateUtils.getMidDate(model.currentDate));
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:VGroup width="100%" height="100%" verticalAlign="middle" horizontalAlign="center" gap="0">
+		
+		<s:HGroup width="100%">
+				<s:BorderContainer width="50%" height="450" backgroundColor="#DDD9BE">
+					
+					<s:VGroup width="100%" horizontalAlign="center">
+						<s:Group height="5"/>
+						<s:Label text="Select our Wedding planner to manage your day to day activities"/>
+						<s:Group height="5"/>
+						<s:Scroller width="530" height="330">
+							<s:DataGroup id="hrEvent" width="100%"
+										 dataProvider="{taskList}"
+										 layout="{this.vlayout}"
+										 itemRenderer="com.ezplanner.calander.ui.renderers.ItemRendererTaskItem"
+										 />	
+						</s:Scroller>	
+						
+						<s:HGroup paddingTop="10">
+							<s:Button id="setdayBtn" label="Set this day" click="enterDayDetailEventHandler(event)" enabled="false"/>
+							<s:Button id="nextBtn" label="Go to next day" click="navigateDays(event)"/>
+							<s:Button id="prevBtn" label="Go to previous day" click="navigateDays(event)"/>
+						</s:HGroup>
+						
+					</s:VGroup>
+					
+					
+				</s:BorderContainer>
+			
+				<s:BorderContainer width="50%" height="450" backgroundColor="#DDD9BE">
+					
+					<s:VGroup width="100%" verticalAlign="middle" horizontalAlign="center">
+						<s:Group height="50"/>
+						
+						<s:VGroup gap="10">
+							<s:Label text="Select our guest book to manage your gust list"/>
+							<mx:DateChooser id="cdate" change="dateSelectHandler(event)" click="dateChangeHandler(event)" selectedDate="{model.currentDate}" />
+						</s:VGroup>
+						
+					</s:VGroup>
+					
+				</s:BorderContainer>
+		</s:HGroup>
+	</s:VGroup>
+	
+</s:NavigatorContent>

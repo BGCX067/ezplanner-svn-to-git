@@ -1,0 +1,325 @@
+-- phpMyAdmin SQL Dump
+-- version 3.2.0.1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Jan 25, 2011 at 03:16 AM
+-- Server version: 5.1.36
+-- PHP Version: 5.3.0
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+--
+-- Database: `pro4v1`
+--
+DROP DATABASE `pro4v1`;
+CREATE DATABASE `pro4v1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `pro4v1`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `association`
+--
+
+CREATE TABLE IF NOT EXISTS `association` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `uid` int(8) DEFAULT NULL,
+  `pid` int(8) DEFAULT NULL,
+  `cid` int(8) DEFAULT NULL,
+  `mid` int(8) DEFAULT NULL,
+  `moduleAccess` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=38 ;
+
+--
+-- Dumping data for table `association`
+--
+
+INSERT INTO `association` (`id`, `uid`, `pid`, `cid`, `mid`, `moduleAccess`) VALUES
+(37, 42, 17, 37, 3, 1),
+(36, 42, 17, 37, 2, 2),
+(35, 42, 17, 37, 1, 2),
+(34, 41, 17, 37, 1, 3),
+(33, 41, 17, 37, 2, 2),
+(32, 41, 17, 37, 3, 2),
+(31, 6, 17, 37, 3, 0),
+(30, 6, 17, 37, 2, 0),
+(29, 6, 17, 37, 1, 0),
+(28, 6, NULL, 37, NULL, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customers`
+--
+
+CREATE TABLE IF NOT EXISTS `customers` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `customerName` varchar(255) NOT NULL,
+  `description` text,
+  `allotedUsers` int(3) NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `createdOn` datetime NOT NULL,
+  `modifiedOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`customerName`),
+  UNIQUE KEY `customerName` (`customerName`),
+  FULLTEXT KEY `description` (`description`),
+  FULLTEXT KEY `name_2` (`customerName`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=38 ;
+
+--
+-- Dumping data for table `customers`
+--
+
+INSERT INTO `customers` (`id`, `customerName`, `description`, `allotedUsers`, `status`, `createdOn`, `modifiedOn`) VALUES
+(37, 'My New Customer', 'Customer desctiption', 15, 1, '2011-01-25 04:21:08', '2011-01-25 04:21:08'),
+(35, 'VoiceMails Inc', 'VoiceMails customer description to be detailed', 100, 1, '2011-01-22 03:09:00', '2011-01-22 03:09:00'),
+(34, 'Talk24 Telecom', 'Talk24 Telecom Services, Indonesia', 25, 1, '2011-01-22 01:14:40', '2011-01-22 01:14:40');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `modules`
+--
+
+CREATE TABLE IF NOT EXISTS `modules` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `moduleName` varchar(255) NOT NULL,
+  `description` text,
+  `status` tinyint(4) NOT NULL DEFAULT '1',
+  `createdOn` datetime NOT NULL,
+  `modifiedOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `modules`
+--
+
+INSERT INTO `modules` (`id`, `moduleName`, `description`, `status`, `createdOn`, `modifiedOn`) VALUES
+(1, 'Risk & Issues', NULL, 1, '0000-00-00 00:00:00', '2011-01-24 15:19:59'),
+(2, 'Report & Graphs', NULL, 1, '0000-00-00 00:00:00', '2011-01-24 15:20:33'),
+(3, 'Documents & Templates', NULL, 1, '0000-00-00 00:00:00', '2011-01-24 15:21:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `privileges`
+--
+
+CREATE TABLE IF NOT EXISTS `privileges` (
+  `userTypeId` int(11) NOT NULL,
+  `serviceId` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `privileges`
+--
+
+INSERT INTO `privileges` (`userTypeId`, `serviceId`) VALUES
+(3, 10),
+(3, 8),
+(3, 7),
+(3, 6),
+(3, 4),
+(2, 18),
+(2, 17),
+(2, 16),
+(2, 15),
+(2, 14),
+(2, 13),
+(2, 12),
+(2, 11),
+(2, 10),
+(2, 9),
+(2, 8),
+(2, 7),
+(2, 6),
+(2, 5),
+(2, 4),
+(2, 3),
+(2, 2),
+(2, 1),
+(10, 18),
+(10, 17),
+(10, 16),
+(10, 15),
+(10, 14),
+(10, 13),
+(10, 12),
+(10, 11),
+(10, 10),
+(10, 9),
+(10, 5),
+(10, 4),
+(10, 3),
+(10, 2),
+(10, 1),
+(9, 4),
+(9, 2),
+(9, 1),
+(1, 2),
+(1, 1),
+(3, 2),
+(3, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `projects`
+--
+
+CREATE TABLE IF NOT EXISTS `projects` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `projectName` varchar(255) NOT NULL,
+  `description` text,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `createdOn` datetime NOT NULL,
+  `modifiedOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FULLTEXT KEY `description` (`description`),
+  FULLTEXT KEY `name` (`projectName`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
+
+--
+-- Dumping data for table `projects`
+--
+
+INSERT INTO `projects` (`id`, `projectName`, `description`, `status`, `createdOn`, `modifiedOn`) VALUES
+(17, 'My New Project', 'descirpiton for project', 1, '2011-01-25 04:21:24', '2011-01-25 04:21:24');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `risk_issues`
+--
+
+CREATE TABLE IF NOT EXISTS `risk_issues` (
+  `entryNumber` bigint(16) NOT NULL AUTO_INCREMENT,
+  `type` varchar(32) NOT NULL,
+  `shortDesc` varchar(127) NOT NULL,
+  `longDesc` text NOT NULL,
+  `status` varchar(32) NOT NULL,
+  `raisedBy` varchar(64) NOT NULL,
+  `userName` varchar(64) NOT NULL,
+  `owner` varchar(64) NOT NULL,
+  `severity` tinyint(8) NOT NULL,
+  `probability` tinyint(8) NOT NULL,
+  `detectability` tinyint(8) NOT NULL,
+  `controllability` tinyint(8) NOT NULL,
+  `score` int(16) NOT NULL,
+  `priority` varchar(32) NOT NULL,
+  `comments` text NOT NULL,
+  `mitigationStep` text NOT NULL,
+  `area` varchar(150) NOT NULL,
+  `workStream` varchar(32) NOT NULL,
+  `contingencyPlan` text NOT NULL,
+  `goLive` tinyint(1) NOT NULL,
+  `acceptedRejected` tinyint(1) NOT NULL,
+  `entryDate` varchar(100) NOT NULL,
+  `lastUpdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `closureDate` date DEFAULT NULL,
+  `crossRef` varchar(50) DEFAULT NULL,
+  `updatedBy` int(8) NOT NULL,
+  `customerId` int(50) NOT NULL,
+  `projectId` int(50) NOT NULL,
+  PRIMARY KEY (`entryNumber`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=46 ;
+
+--
+-- Dumping data for table `risk_issues`
+--
+
+INSERT INTO `risk_issues` (`entryNumber`, `type`, `shortDesc`, `longDesc`, `status`, `raisedBy`, `userName`, `owner`, `severity`, `probability`, `detectability`, `controllability`, `score`, `priority`, `comments`, `mitigationStep`, `area`, `workStream`, `contingencyPlan`, `goLive`, `acceptedRejected`, `entryDate`, `lastUpdate`, `closureDate`, `crossRef`, `updatedBy`, `customerId`, `projectId`) VALUES
+(44, 'Risk', 'asdfas', 'asdfasdfasd', 'Required', 'rrr', 'uuu', 'ooo', 3, 8, 0, 3, 0, 'High', 'ccc', 'mmmm', 'People', 'Work stream', 'ccccppp', 1, 1, 'now()', '2011-01-25 06:58:03', NULL, NULL, 6, 37, 17),
+(45, 'Risk', 'asdfas', 'asdfasdfasd', 'Required', 'rrr', 'uuu', 'ooo', 3, 8, 0, 3, 0, 'High', 'ccc', 'mmmm', 'People', 'Work stream', 'ccccppp', 1, 1, 'now()', '2011-01-25 07:02:54', NULL, NULL, 6, 37, 17);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `services`
+--
+
+CREATE TABLE IF NOT EXISTS `services` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `serviceName` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+
+--
+-- Dumping data for table `services`
+--
+
+INSERT INTO `services` (`id`, `serviceName`) VALUES
+(1, 'Risk and Issues'),
+(2, 'Documents and Templates'),
+(3, 'Create Users'),
+(4, 'Modify Users'),
+(5, 'Remove Users'),
+(6, 'Create Customer'),
+(7, 'Modify Customer'),
+(8, 'Remove Customer'),
+(9, 'Add Project'),
+(10, 'Modify Project'),
+(11, 'Remove Project'),
+(12, 'Add Module'),
+(13, 'Modify Module'),
+(14, 'Remove Module'),
+(15, 'Add Risk and Issue'),
+(16, 'Manage Risk & Issue'),
+(17, 'Add Documents & Templates'),
+(18, 'Manage Documents & Templates');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `userName` varchar(255) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  `fullName` varchar(255) NOT NULL,
+  `type` int(3) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `createdOn` datetime NOT NULL,
+  `modifiedOn` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `userName` (`userName`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=43 ;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `userName`, `password`, `fullName`, `type`, `status`, `createdOn`, `modifiedOn`) VALUES
+(6, 'dev', 'e77989ed21758e78331b20e477fc5582', 'Development User', 2, 1, '0000-00-00 00:00:00', '2011-01-25 04:39:11'),
+(42, 'customeruser@pro4perform.com', '4a3a5378a78d89623ea9df2435b11fef', 'Customer User', 1, 1, '2011-01-25 05:07:22', '2011-01-25 05:07:22'),
+(41, 'new@user.com', '8b58cb57ef351aa79da49ccd92e26393', 'My New User', 1, 1, '2011-01-25 04:21:45', '2011-01-25 04:21:45');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `usertype`
+--
+
+CREATE TABLE IF NOT EXISTS `usertype` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `displayName` varchar(50) NOT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+
+--
+-- Dumping data for table `usertype`
+--
+
+INSERT INTO `usertype` (`id`, `displayName`, `description`) VALUES
+(1, 'Customer User', 'Normal user who would be at the bottommost level of authoritative hierarchy'),
+(2, 'Pro4 Super User', 'Pro4 Super User will contain all and every privilege that might be needed to access any part of the system'),
+(3, 'Pro4 Administrator', 'Administrative user from Pro4 with close to equal rights as Pro4 super user'),
+(10, 'Customer Administrator', 'Administrator from customer side who will have privileges to manage user and data'),
+(9, 'Customer Manager', 'Customer Managers should be able to decide which of the users for their customer/Project Entries can access reports. This functionality will be expanded in later releases.');

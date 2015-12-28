@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600"
+			   xmlns:ns="http://mate.asfusion.com" 
+			   xmlns:maps="com.ezplanner.calander.maps.*" 
+			   xmlns:views="com.ezplanner.calander.ui.views.*" 
+			   xmlns:core="com.ezplanner.calander.core.*"
+			   creationComplete="creationCompleteHandler(event)">
+	<fx:Declarations>
+		<ns:Debugger level="{Debugger.ALL}"/>
+		<maps:EZEventMap/>
+		<s:RemoteObject id="remoteService" source="core.ContentGateway" destination="easyplanner" 
+						fault="onServiceFault(event)" showBusyCursor="true">
+		</s:RemoteObject>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Style source="assets/styles/ezstyle.css"/>
+	<fx:Script>
+		<![CDATA[
+			import com.ezplanner.calander.core.ServiceManager;
+			
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			protected function creationCompleteHandler(event:FlexEvent):void
+			{
+				ServiceManager.getInstance().updateService(remoteService);
+			}
+			
+			protected function onServiceFault(event:FaultEvent):void {
+				trace("----")
+			}
+			
+		]]>
+	</fx:Script>
+	<!--<s:Button label="call remote" click="this.remoteService.getAllUsers()"/>-->
+	<views:MasterUI/>
+</s:Application>

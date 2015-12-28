@@ -1,0 +1,28 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+@namespace controls "com.ezplanner.calander.ui.controls.*";
+
+@font-face {
+	src: url("assets/fonts/DIN-Medium.ttf");
+	fontFamily: BoothFamily;
+	embedAsCFF: true;
+	fontAntiAliasType:advanced;
+}
+@font-face {
+	src: url("assets/fonts/QuaySansMdITCTT Italic.ttf");
+	fontFamily: "Message";
+	embedAsCFF: true;
+}
+
+s|TabBar{font-family:BoothFamily;font-size:13;}
+s|Label{font-family:BoothFamily;font-size:13;}
+s|Button{font-family:BoothFamily;font-size:13;}
+s|TextInput{font-family:BoothFamily;font-size:13;}
+s|BorderContainer{borderVisible:false;}
+
+mx|Alert{fontFamily:Arial;fontAntiAliasType:advanced;fontSize:15;}
+mx|DateChooser{fontFamily:Verdana;fontAntiAliasType:advanced;fontSize:15;}
+controls|TaskInputComponent{skinClass:ClassReference("com.ezplanner.calander.ui.skins.TaskInputSkin")}
+
+

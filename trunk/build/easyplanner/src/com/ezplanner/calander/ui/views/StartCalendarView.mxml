@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<s:DateTimeFormatter id="dformat" dateStyle="short"/>
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.ezplanner.calander.ui.presenters.MasterPresentationModel;
+			import com.ezplanner.calander.utils.Constants;
+			
+			import mx.controls.Alert;
+			import mx.utils.ObjectUtil;
+			
+			import org.as3commons.lang.StringUtils;
+			private var sdate:Date;
+			private var edate:Date;
+			
+			public var model:MasterPresentationModel;
+			
+			private function dateChangeHandler(event:MouseEvent):void{
+				if(event.currentTarget == this.startDate){
+					this.sdate = this.startDate.selectedDate;
+				}
+				else if(event.currentTarget == this.endDate){
+					this.edate = this.endDate.selectedDate;
+				}
+				else{
+					//do nothing
+				}
+				startBtn.enabled = (this.sdate != null && edate != null ? true : false);
+				
+			}
+			private function startCalender():void{
+				var dcompare:Number = ObjectUtil.dateCompare(sdate,edate);
+				if(dcompare > -1){
+					Alert.show("Date selected are wrong. Please select dates again.","Dates are wrong.");
+				}
+				else if(dcompare == 0){
+					Alert.show("Date selected are wrong. Please select dates again.","Dates are wrong.");
+				}
+				else{
+					
+					model.addNewEvent(descTxt.text,sdate.toString(),edate.toString());
+					//model.gotoPages(Constants.MODE_START_DATE_ENTRY);
+				}
+			}
+		]]>
+	</fx:Script>
+	
+	<s:VGroup width="100%" height="100%" verticalAlign="middle" horizontalAlign="center" gap="10">
+		
+		<s:HGroup width="100%">
+				<s:BorderContainer width="50%" height="400" backgroundColor="#DDD9BE">
+					
+					<s:VGroup width="100%" verticalAlign="middle" horizontalAlign="center">
+						<s:Group height="50"/>
+						<s:VGroup gap="10">
+							<s:Label text="To set the planning calendar. Select a starting date now"/>
+							<mx:DateChooser id="startDate" click="dateChangeHandler(event)"/>
+						</s:VGroup>
+					</s:VGroup>
+					
+					
+				</s:BorderContainer>
+			
+				<s:BorderContainer width="50%" height="400" backgroundColor="#DDD9BE">
+					
+					<s:VGroup width="100%" verticalAlign="middle" horizontalAlign="center">
+						<s:Group height="50"/>
+						<s:VGroup gap="10">
+							<s:Label text="Set a finishing date now"/>
+							<mx:DateChooser id="endDate" click="dateChangeHandler(event)"/>
+						</s:VGroup>
+					</s:VGroup>
+					
+				</s:BorderContainer>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle" horizontalAlign="center" gap="10">
+			<s:TextArea id="descTxt"  width="350" height="100"
+						prompt="Enter description"/>
+			<s:Button id="startBtn" label="Start using Planner." enabled="false" click="startCalender()"/>
+		</s:HGroup>
+	</s:VGroup>
+	
+</s:NavigatorContent>
